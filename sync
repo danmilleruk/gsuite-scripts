@@ -1,0 +1,14 @@
+#!/bin/bash
+
+while :
+do
+
+    COUNT=`pgrep -c sync-wrapper`
+    if [ $COUNT -eq 0 ]; then
+        echo "FOUND DEAD PROCESS, RESTARTING"
+        /data/bin/inc/sync-wrapper --frequency 30 --source /data/.local-encrypt --destination google --paths "HRWhOOq-Zh-ltRPDfe6WrsLA,ETSpy7Jj1-TS6ethMSMfTKfs"
+    fi
+
+    sleep 20
+
+done

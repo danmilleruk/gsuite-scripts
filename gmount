@@ -1,0 +1,18 @@
+/bin/fusermount -uz /data/.local-encrypt
+/bin/fusermount -uz /data/.local-decrypt
+/bin/fusermount -uz /data/.gsuite-encrypt
+/bin/fusermount -uz /data/.gsuite-decrypt
+/bin/fusermount -uz /data/media
+
+service plexdrive stop
+service plexdrive start
+ 
+ENCFS6_CONFIG='/data/encfs.xml' encfs --public --extpass="cat /root/encfs_pass.txt" /data/.gsuite-encrypt /data/.gsuite-decrypt
+ENCFS6_CONFIG='/data/encfs.xml' encfs --public --extpass="cat /root/encfs_pass.txt" /data/.local-encrypt /data/.local-decrypt
+
+unionfs-fuse \
+-o cow,allow_other,direct_io,auto_cache,sync_read \
+/data/.local-decrypt=RW:/data/.gsuite-decrypt=RO /data/media/
+ 
+exit
+
